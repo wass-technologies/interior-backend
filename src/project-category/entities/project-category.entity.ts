@@ -1,5 +1,6 @@
+import { Admin } from "src/admin/entities/admin.entity";
 import { ProjectDetail } from "src/project-details/entities/project-detail.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class ProjectCategory {
@@ -20,6 +21,9 @@ export class ProjectCategory {
   
     @UpdateDateColumn()
     updatedAt: Date;
+    
+    @ManyToOne(() => Admin, (admin) => admin.projectCategories, { onDelete: 'CASCADE' })
+    admin: Admin;
 
 
 

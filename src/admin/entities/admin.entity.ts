@@ -12,8 +12,8 @@ import { ServiceFeature } from "src/service-features/entities/service-feature.en
 import { ServiceImage } from "src/service-image/entities/service-image.entity";
 import { SocialMedia } from "src/social-media/entities/social-media.entity";
 import { UserDetail } from "src/user-details/entities/user-detail.entity";
-import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+@Entity()
 export class Admin {
     @PrimaryGeneratedColumn('uuid')
     id:string;
@@ -27,35 +27,37 @@ export class Admin {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    socialLink: SocialMedia[];
+    @OneToMany(() => UserDetail, (userDetail) => userDetail.admin, { cascade: true })
+    userDetails: UserDetail[];
 
-    userDetail:UserDetail[];
+    @OneToMany(() => ProjectCategory, (category) => category.admin, { cascade: true })
+    projectCategories: ProjectCategory[];
 
-    projectCategory:ProjectCategory[];
+    @OneToMany(() => ProjectDetail, (project) => project.admin, { cascade: true })
+    projects: ProjectDetail[];
 
-    project:ProjectDetail[];
+    @OneToMany(() => ProjectFeature, (feature) => feature.admin, { cascade: true })
+    projectFeatures: ProjectFeature[];
 
-    projectFeatures:ProjectFeature[];
+    @OneToMany(() => ProjectImage, (image) => image.admin, { cascade: true })
+    projectImages: ProjectImage[];
 
-    projectImage:ProjectImage[];
+    @OneToMany(() => MemberDetail, (member) => member.admin, { cascade: true })
+    members: MemberDetail[];
 
-    comments:CommentDetail[];
+    @OneToMany(() => ServiceDetail, (service) => service.admin, { cascade: true })
+    services: ServiceDetail[];
 
-    menberDetail:MemberDetail[];
+    @OneToMany(() => ServiceImage, (serviceImage) => serviceImage.admin, { cascade: true })
+    serviceImages: ServiceImage[];
 
-    serviceDetail: ServiceDetail[];
+    @OneToMany(() => ServiceFeature, (serviceFeature) => serviceFeature.admin, { cascade: true })
+    serviceFeatures: ServiceFeature[];
 
-    serviceImage:ServiceImage[];
-    
-    serviceFeature:ServiceFeature[]
+    @OneToMany(() => EventDetail, (event) => event.admin, { cascade: true })
+    events: EventDetail[];
 
-    ratingDetail: RatingDetail[];
-
-    eventDetail: EventDetail[];
-
-    contactDetail: ContactusDetail[];
-
-
-
+    @OneToMany(()=> SocialMedia,(socialMedia)=> socialMedia.admin)
+    socialMedia:SocialMedia[]
 
 }

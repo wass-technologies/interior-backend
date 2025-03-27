@@ -16,9 +16,29 @@ import { ProjectFeaturesModule } from './project-features/project-features.modul
 import { ProjectImageModule } from './project-image/project-image.module';
 import { ServiceImageModule } from './service-image/service-image.module';
 import { ServiceFeaturesModule } from './service-features/service-features.module';
+import { BlogsModule } from './blogs/blogs.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [AdminModule, SocialMediaModule, ServiceDetailsModule, MemberDetailModule, RatingDetailsModule, EventDetailsModule, UserDetailsModule, ProjectDetailsModule, ProjectCategoryModule, ContactusDetailsModule, CommentDetailsModule, ProjectFeaturesModule, ProjectImageModule, ServiceImageModule, ServiceFeaturesModule],
+  imports: [
+    ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // Path to your uploads directory
+      serveRoot: '/uploads', // The URL path to access the files
+    }),TypeOrmModule.forRoot({
+    type: 'mysql',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    username: process.env.USER_NAME,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    synchronize: false,
+  }),
+    AdminModule, SocialMediaModule, ServiceDetailsModule, MemberDetailModule, RatingDetailsModule, EventDetailsModule, UserDetailsModule, ProjectDetailsModule, ProjectCategoryModule, ContactusDetailsModule, CommentDetailsModule, ProjectFeaturesModule, ProjectImageModule, ServiceImageModule, ServiceFeaturesModule, BlogsModule],
   controllers: [AppController],
   providers: [AppService],
 })

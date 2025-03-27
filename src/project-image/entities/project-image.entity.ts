@@ -1,3 +1,4 @@
+import { Admin } from "src/admin/entities/admin.entity";
 import { ProjectDetail } from "src/project-details/entities/project-detail.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -22,6 +23,7 @@ export class ProjectImage {
     @JoinColumn({name:'project_id'})
     project:ProjectDetail;
 
-
+    @ManyToOne(() => Admin, (admin) => admin.projectImages, { onDelete: 'CASCADE' })
+    admin: Admin;
 
 }
