@@ -15,15 +15,14 @@ export class ProjectDetail {
     @Column({type:'text', nullable:true})
     description:string;
 
-    @ManyToMany(()=> ProjectCategory,(category)=>category.projects)
-    @JoinColumn({name:'catecory_id'})
-    category: ProjectCategory[]
+    @ManyToOne(() => ProjectCategory, (category) => category.projects, { onDelete: 'CASCADE' })
+    category: ProjectCategory;
 
     @OneToMany(()=>ProjectImage,(image)=>image.project)
-    image:ProjectImage[]
+    image:ProjectImage[];
 
     @OneToMany(()=>ProjectFeature,(feature)=>feature.project)
-    features:ProjectFeature[]
+    features:ProjectFeature[];
 
     @ManyToOne(() => Admin, (admin) => admin.projects, { onDelete: 'CASCADE' })
     admin: Admin;

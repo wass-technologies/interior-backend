@@ -39,7 +39,7 @@ import { EmailSubscribersModule } from './email-subscribers/email-subscribers.mo
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
   }),
-    AdminModule, SocialMediaModule, ServiceDetailsModule, MemberDetailModule, RatingDetailsModule, EventDetailsModule, UserDetailsModule, ProjectDetailsModule, ProjectCategoryModule, ContactusDetailsModule, CommentDetailsModule, ProjectFeaturesModule, ProjectImageModule, ServiceImageModule, ServiceFeaturesModule, BlogsModule, EmailSubscribersModule],
+    AdminModule, SocialMediaModule, ServiceDetailsModule, MemberDetailModule, RatingDetailsModule, EventDetailsModule, UserDetailsModule, ProjectDetailsModule, ProjectCategoryModule, ContactusDetailsModule, CommentDetailsModule, ProjectFeaturesModule, ProjectImageModule, ServiceImageModule, ServiceFeaturesModule, BlogsModule, EmailSubscribersModule,],
   controllers: [AppController],
   providers: [AppService],
 })

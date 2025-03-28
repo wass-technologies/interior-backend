@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ProjectDetailsService } from './project-details.service';
-import { CreateProjectDetailDto } from './dto/create-project-detail.dto';
+import { CreateProjectDetailDto, PaginationDto } from './dto/create-project-detail.dto';
 import { UpdateProjectDetailDto } from './dto/update-project-detail.dto';
+
 
 @Controller('project-details')
 export class ProjectDetailsController {
@@ -13,8 +14,8 @@ export class ProjectDetailsController {
   }
 
   @Get()
-  findAll() {
-    return this.projectDetailsService.findAll();
+  findAll(@Query()dto:PaginationDto) {
+    return this.projectDetailsService.findAll(dto);
   }
 
   @Get(':id')
