@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateContactusDetailDto } from './dto/create-contactus-detail.dto';
 import { UpdateContactusDetailDto } from './dto/update-contactus-detail.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ContactusDetail } from './entities/contactus-detail.entity';
+import { Like, Repository } from 'typeorm';
+import { CommonPaginationDto } from 'src/common/common-pagination.dto';
 
 @Injectable()
 export class ContactusDetailsService {
-  create(createContactusDetailDto: CreateContactusDetailDto) {
-    return 'This action adds a new contactusDetail';
+  constructor(
+    @InjectRepository(ContactusDetail) private readonly repo: Repository<ContactusDetail>
+
+  ){}
+  async create(dto: CreateContactusDetailDto) {
+    const obj = Object.create(dto);
+    return this.repo.save(obj);
   }
 
-  findAll() {
-    return `This action returns all contactusDetails`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} contactusDetail`;
-  }
-
-  update(id: number, updateContactusDetailDto: UpdateContactusDetailDto) {
-    return `This action updates a #${id} contactusDetail`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} contactusDetail`;
+  async findAll(dto: CommonPaginationDto) {
+    const keyword = dto.keyword || '';
+    const [result, count] = await this.repo.findAndCount({
+      take: dto.limit,
+      skip: dto.offset,
+      where: {
+        name: Like('%' + keyword + '%'),
+        query: Like('%' + keyword + '%'),
+        phoneNumber: Like('%' + keyword + '%'),
+        message: Like('%' + keyword + '%'),
+      },
+    });
+    return {result, count};
   }
 }

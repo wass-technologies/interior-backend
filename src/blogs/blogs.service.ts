@@ -1,26 +1,71 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Blog } from './entities/blog.entity';
+import { Repository } from 'typeorm';
+import { CommonPaginationDto } from 'src/common/common-pagination.dto';
 
 @Injectable()
 export class BlogsService {
-  create(createBlogDto: CreateBlogDto) {
-    return 'This action adds a new blog';
+  constructor(
+    @InjectRepository(Blog) private readonly blogRepo: Repository<Blog>
+  ){}
+ async create(createBlogDto: CreateBlogDto) {
+    const result = await this.blogRepo.findOne({where:{title:createBlogDto.title}});
+    if(result){
+      throw new ConflictException('Blogs alredy exists');
+    }
+    const obj = Object.assign(createBlogDto)
+    return this.blogRepo.save(obj);
   }
 
-  findAll() {
-    return `This action returns all blogs`;
+  async findAll(dto: CommonPaginationDto) {
+    const keyword = dto.keyword || '';
+
+    const queryBuilder = this.blogRepo.createQueryBuilder('blog');
+
+    if (keyword) {
+        queryBuilder.andWhere(
+            '(blog.title LIKE :keyword OR blog.description LIKE :keyword)', 
+            { keyword: `%${keyword}%` }
+        );
+    }
+
+    queryBuilder.take(dto.limit).skip(dto.offset);
+
+    const [result, count] = await queryBuilder.getManyAndCount();
+
+    return { result, count };
+}
+
+  async findOne(id:string){
+    const result = await this.blogRepo.findOne({
+      where:{id:id}
+    });
+    if(!result){
+      throw new NotFoundException('Blog not found..!')
+    }
+    return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blog`;
+  async update(id:string, dto:UpdateBlogDto){
+    const result = await this.blogRepo.findOne({where:{id:id}});
+    if(!result){
+      throw new NotFoundException('Blog not found...!')
+    }
+    const obj = Object.assign(result,dto);
+    return this.blogRepo.save(obj);
   }
 
-  update(id: number, updateBlogDto: UpdateBlogDto) {
-    return `This action updates a #${id} blog`;
+  async image(image:string, result:Blog){
+    const obj = Object.assign(result,{
+      image:process.env.BASE_URL + image,
+      imagePath:image,
+    });
+    return this.blogRepo.save(obj);
   }
+  
 
-  remove(id: number) {
-    return `This action removes a #${id} blog`;
-  }
+
 }

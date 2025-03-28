@@ -17,6 +17,9 @@ import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Up
 export class Admin {
     @PrimaryGeneratedColumn('uuid')
     id:string;
+    
+    @Column()
+    name:string;
 
     @Column({type: 'varchar', length: 100, nullable: true })
     emailId: string;
