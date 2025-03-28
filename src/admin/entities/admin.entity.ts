@@ -1,3 +1,4 @@
+import { Blog } from "src/blogs/entities/blog.entity";
 import { CommentDetail } from "src/comment-details/entities/comment-detail.entity";
 import { ContactusDetail } from "src/contactus-details/entities/contactus-detail.entity";
 import { EventDetail } from "src/event-details/entities/event-detail.entity";
@@ -30,8 +31,9 @@ export class Admin {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany(() => UserDetail, (userDetail) => userDetail.admin, { cascade: true })
-    userDetails: UserDetail[];
+    @OneToMany(() => Blog, (blog) => blog.admin, { cascade: true })
+    blogs: Blog[];
+
 
     @OneToMany(() => ProjectCategory, (category) => category.admin, { cascade: true })
     projectCategories: ProjectCategory[];
@@ -59,6 +61,9 @@ export class Admin {
 
     @OneToMany(() => EventDetail, (event) => event.admin, { cascade: true })
     events: EventDetail[];
+    
+    @OneToMany(() => UserDetail, (userDetail) => userDetail.admin, { cascade: true })
+    userDetails: UserDetail[];
 
     @OneToMany(()=> SocialMedia,(socialMedia)=> socialMedia.admin)
     socialMedia:SocialMedia[]

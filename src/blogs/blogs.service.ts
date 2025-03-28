@@ -5,18 +5,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Blog } from './entities/blog.entity';
 import { Repository } from 'typeorm';
 import { CommonPaginationDto } from 'src/common/common-pagination.dto';
+import { Admin } from 'src/admin/entities/admin.entity';
 
 @Injectable()
 export class BlogsService {
   constructor(
-    @InjectRepository(Blog) private readonly blogRepo: Repository<Blog>
+    @InjectRepository(Blog) private readonly blogRepo: Repository<Blog>,
+    @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>
   ){}
  async create(createBlogDto: CreateBlogDto) {
+    const admin = await this.adminRepo.findOne({where:{id:createBlogDto.adminId}});
+    if (!admin) {
+      throw new NotFoundException('Admin not found');
+    }
     const result = await this.blogRepo.findOne({where:{title:createBlogDto.title}});
     if(result){
       throw new ConflictException('Blogs alredy exists');
     }
-    const obj = Object.assign(createBlogDto)
+    const obj = this.blogRepo.create({...createBlogDto, admin});
     return this.blogRepo.save(obj);
   }
 
@@ -65,6 +71,7 @@ export class BlogsService {
     });
     return this.blogRepo.save(obj);
   }
+  
   
 
 
