@@ -52,8 +52,6 @@ export class ProjectDetailsService {
       'project_detail.description',
       'project_category.id',
       'project_category.name',
-      'admin.id',
-      'admin.name',
       'project_image.fileName',
       'project_feature.name',
       'project_feature.details'
@@ -76,15 +74,34 @@ export class ProjectDetailsService {
     return {result,total};
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectDetail`;
+  async findOne(id: string) {
+    const project = await this.repo.findOne({
+      where: { id },
+      relations: ['category', 'admin', 'image', 'features'],
+    });
+  
+    if (!project) {
+      throw new NotFoundException(`Project with ID ${id} not found..!`);
+    }
+  
+    return project;
+    
   }
 
-  update(id: number, updateProjectDetailDto: UpdateProjectDetailDto) {
-    return `This action updates a #${id} projectDetail`;
+  async update(id: string, dto: UpdateProjectDetailDto) {
+    const project = await this.repo.findOne({where:{id:id}});
+    if (!project) {
+      throw new NotFoundException(`project not found`);
+    }
+    const obj = Object.assign(project,dto);
+    return await this.repo.save(obj);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} projectDetail`;
+  async remove(id:string) {
+    const project = await this.repo.findOne({where:{id:id}});
+    if (!project) {
+      throw new NotFoundException(`project not found`);
+    }
+    return await this.repo.remove(project);;
   }
 }

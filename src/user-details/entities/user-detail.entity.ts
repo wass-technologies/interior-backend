@@ -9,6 +9,15 @@ export class UserDetail {
     @Column()
     email:string;
 
+    @Column()
+    name:string;
+
+    @Column({ type: 'varchar', length: 500, nullable: true })
+    profileImage: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    designation: string;
+
     @ManyToOne(() => Admin, (admin) => admin.userDetails, { onDelete: 'CASCADE' })
     admin:Admin;
 

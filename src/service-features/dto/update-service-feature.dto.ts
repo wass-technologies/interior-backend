@@ -1,4 +1,14 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateServiceFeatureDto } from './create-service-feature.dto';
+import { IsString, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
 
-export class UpdateServiceFeatureDto extends PartialType(CreateServiceFeatureDto) {}
+export class UpdateServiceFeatureDto  {
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    name:string;
+
+    @IsNotEmpty()
+    @IsArray()
+    @IsOptional()
+    details:string[];
+}

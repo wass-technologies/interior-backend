@@ -15,7 +15,7 @@ export class ServiceFeature {
     
     @ManyToOne(()=> ServiceDetail,(service)=>service.features)
     @JoinColumn({name:'service_id'})
-    project:ServiceDetail;
+    service:ServiceDetail;
     
     @ManyToOne(() => Admin, (admin) => admin.serviceFeatures, { onDelete: 'CASCADE' })
     admin: Admin;

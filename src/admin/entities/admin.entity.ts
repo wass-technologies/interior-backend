@@ -34,7 +34,6 @@ export class Admin {
     @OneToMany(() => Blog, (blog) => blog.admin, { cascade: true })
     blogs: Blog[];
 
-
     @OneToMany(() => ProjectCategory, (category) => category.admin, { cascade: true })
     projectCategories: ProjectCategory[];
 
@@ -49,6 +48,9 @@ export class Admin {
 
     @OneToMany(() => MemberDetail, (member) => member.admin, { cascade: true })
     members: MemberDetail[];
+
+    @OneToMany(() => RatingDetail, (rating) => rating.admin, { cascade: true })    
+    rating:RatingDetail[];
 
     @OneToMany(() => ServiceDetail, (service) => service.admin, { cascade: true })
     services: ServiceDetail[];

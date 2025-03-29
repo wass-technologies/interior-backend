@@ -1,4 +1,14 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateProjectFeatureDto } from './create-project-feature.dto';
 
-export class UpdateProjectFeatureDto extends PartialType(CreateProjectFeatureDto) {}
+import { IsString, IsNotEmpty, IsArray, IsOptional } from 'class-validator';
+
+export class UpdateProjectFeatureDto {
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    name:string;
+
+    @IsNotEmpty()
+    @IsArray()
+    @IsOptional()
+    details:string[];
+}

@@ -17,7 +17,7 @@ export class ServiceDetail {
     @OneToMany(()=>ServiceImage,(image)=>image.service)
     image:ServiceImage[]
 
-    @OneToMany(()=>ServiceFeature,(feature)=>feature.project)
+    @OneToMany(()=>ServiceFeature,(feature)=>feature.service)
     features:ServiceFeature[]
 
     @ManyToOne(() => Admin, (admin) => admin.services, { onDelete: 'CASCADE' })
