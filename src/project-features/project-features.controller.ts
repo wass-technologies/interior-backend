@@ -19,7 +19,7 @@ export class ProjectFeaturesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.projectFeaturesService.findOne(+id);
+    return this.projectFeaturesService.findOne(id);
   }
 
   @Patch(':id')

@@ -14,7 +14,7 @@ export class ServiceImageController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/projectImage',
+        destination: './uploads/serviceImage',
         filename: (req, file, callback) => {
           const randomName = Array(32)
             .fill(null)

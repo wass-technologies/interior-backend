@@ -1,10 +1,19 @@
 import { Type } from "class-transformer";
-import { IsNotEmpty, IsNumber, Min, Max, IsOptional } from "class-validator";
+import { IsNotEmpty, IsNumber, Min, Max, IsOptional, IsUUID } from "class-validator";
 
 export class CreateSocialMediaDto {
+    @IsNotEmpty()
     platform: string;
+
+    @IsNotEmpty()
     link: string;
-    adminId?: string;
+
+    @IsOptional()
+    @IsUUID()
+    adminId: string;
+
+    @IsOptional()
+    @IsUUID()
     memberId?: string;
 }
 export class PaginationDto {

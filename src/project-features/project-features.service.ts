@@ -66,8 +66,12 @@ export class ProjectFeaturesService {
     return {result,total};
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} projectFeature`;
+  async findOne(id: string) {
+    const feature = await this.repo.findOne({where:{id:id}});
+    if(!feature){
+      throw new NotFoundException('feature not found');
+    }
+    return feature
   }
 
   async update(id: string, dto: UpdateProjectFeatureDto) {

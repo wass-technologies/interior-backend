@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { SocialMediaService } from './social-media.service';
 import { CreateSocialMediaDto, PaginationDto } from './dto/create-social-media.dto';
-import { UpdateSocialMediaDto } from './dto/update-social-media.dto';
 
 @Controller('social-media')
 export class SocialMediaController {

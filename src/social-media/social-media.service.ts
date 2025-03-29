@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSocialMediaDto, PaginationDto } from './dto/create-social-media.dto';
 import { UpdateSocialMediaDto } from './dto/update-social-media.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,25 +17,42 @@ export class SocialMediaService {
     @InjectRepository(MemberDetail)
     private readonly memberRepo: Repository<MemberDetail>,
   ) {}
-  async create(dto: CreateSocialMediaDto): Promise<SocialMedia> {
-    const obj = this.repo.create(dto);
-    
+
+  async create(dto: CreateSocialMediaDto) {
     if (dto.adminId) {
-      const admin = await this.adminRepo.findOne({ where: { id: dto.adminId } });
-      if (!admin) {
-        throw new NotFoundException('Admin  not found');
-      }
-      obj.admin = admin;
-    } else if (dto.memberId) {
-      const member = await this.memberRepo.findOne({ where: { id: dto.memberId } });
-      if (!member) {
-        throw new NotFoundException('Member  not found');
-      }
-      obj.member = member;
+        return this.createForAdmin(dto);
     }
-    
-    return await this.repo.save(obj);
-  }
+    if (dto.memberId) {
+        return this.createForMember(dto);
+    }
+    throw new BadRequestException('Either adminId or memberId must be provided.');
+}
+  private async createForAdmin(dto: CreateSocialMediaDto) {
+    const admin = await this.adminRepo.findOne({ where: { id: dto.adminId } });
+    if (!admin) {
+        throw new NotFoundException('Admin Not Found..!');
+    }
+    const obj = this.repo.create({
+        platform: dto.platform,
+        link: dto.link,
+        admin,
+    });
+    return this.repo.save(obj);
+}
+
+private async createForMember(dto: CreateSocialMediaDto) {
+    const member = await this.memberRepo.findOne({ where: { id: dto.memberId } });
+    if (!member) {
+        throw new NotFoundException('Member Not Found..!');
+    }
+    const obj = this.repo.create({
+        platform: dto.platform,
+        link: dto.link,
+        member,
+    });
+    return this.repo.save(obj);
+}
+
 
   async findAll(dto: PaginationDto) {
     
