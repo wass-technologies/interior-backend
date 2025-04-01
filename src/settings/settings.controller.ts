@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator, Query, Put } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { CreateSettingDto } from './dto/create-setting.dto';
 import { UpdateSettingDto } from './dto/update-setting.dto';
@@ -68,7 +68,7 @@ export class SettingsController {
     return this.settingsService.update(+id, dto);
   }
 
-  @Patch('image/:id')
+  @Put('image/:id')
   @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileInterceptor('file', {
@@ -85,9 +85,17 @@ export class SettingsController {
     }),
   )
   async updateImage(
-    @Param('id') id: string, 
-    @UploadedFile() file: Express.Multer.File,
-  ) {
+    @Param('id') id: number, 
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|mp4)' }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 1 }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  )  {
     return this.settingsService.updateImage(file.path, +id);
   }
 

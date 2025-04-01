@@ -68,10 +68,11 @@ export class SettingsService {
   async updateImage(image: string, id: number) {
     const setting = await this.getSetting(id);
 
-    const updatedSetting = Object.assign(setting, {
+    const obj = Object.assign(setting, {
       file: process.env.BL_CDN_LINK + image,
       fileName: image,
     });
+    return this.repo.save(obj);
   }
 
   async deleteSetting(id: number): Promise<void> {
