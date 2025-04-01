@@ -2,26 +2,21 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AdminModule } from './admin/admin.module';
-import { SocialMediaModule } from './social-media/social-media.module';
-import { ServiceDetailsModule } from './service-details/service-details.module';
-import { MemberDetailModule } from './member-detail/member-detail.module';
-import { RatingDetailsModule } from './rating-details/rating-details.module';
-import { EventDetailsModule } from './event-details/event-details.module';
-import { UserDetailsModule } from './user-details/user-details.module';
-import { ProjectDetailsModule } from './project-details/project-details.module';
-import { ProjectCategoryModule } from './project-category/project-category.module';
-import { ContactusDetailsModule } from './contactus-details/contactus-details.module';
-import { CommentDetailsModule } from './comment-details/comment-details.module';
-import { ProjectFeaturesModule } from './project-features/project-features.module';
-import { ProjectImageModule } from './project-image/project-image.module';
-import { ServiceImageModule } from './service-image/service-image.module';
-import { ServiceFeaturesModule } from './service-features/service-features.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { EmailSubscribersModule } from './email-subscribers/email-subscribers.module';
+import { CategoryModule } from './category/category.module';
+import { ProjectsModule } from './projects/projects.module';
+import { ServicesModule } from './services/services.module';
+import { FeedbackModule } from './feedback/feedback.module';
+import { AuthModule } from './auth/auth.module';
+import { SettingsModule } from './settings/settings.module';
+import { CacheModule } from '@nestjs/cache-manager';
+
+
 
 @Module({
   imports: [
@@ -39,7 +34,10 @@ import { EmailSubscribersModule } from './email-subscribers/email-subscribers.mo
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
   }),
-    AdminModule, SocialMediaModule, ServiceDetailsModule, MemberDetailModule, RatingDetailsModule, EventDetailsModule, UserDetailsModule, ProjectDetailsModule, ProjectCategoryModule, ContactusDetailsModule, CommentDetailsModule, ProjectFeaturesModule, ProjectImageModule, ServiceImageModule, ServiceFeaturesModule, BlogsModule, EmailSubscribersModule,],
+  CacheModule.register({
+    isGlobal: true,
+  }),
+    AdminModule, BlogsModule, EmailSubscribersModule, CategoryModule, ProjectsModule, ServicesModule, FeedbackModule, AuthModule, SettingsModule,],
   controllers: [AppController],
   providers: [AppService],
 })

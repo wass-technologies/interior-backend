@@ -18,7 +18,4 @@ export class UserDetail {
     @Column({ type: 'varchar', length: 255, nullable: true })
     designation: string;
 
-    @ManyToOne(() => Admin, (admin) => admin.userDetails, { onDelete: 'CASCADE' })
-    admin:Admin;
-
 }

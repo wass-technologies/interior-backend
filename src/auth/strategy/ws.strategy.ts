@@ -1,0 +1,29 @@
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { Socket } from 'dgram';
+import { Strategy } from 'passport-jwt';
+import { AuthService } from '../auth.service';
+
+@Injectable()
+export class WsJwtStrategy extends PassportStrategy(Strategy) {
+  constructor(private readonly authService: AuthService) {
+    super({
+      jwtFromRequest: ExtractJwtFromWsHeader,
+      secretOrKey: process.env.JWT_SECRET || '',
+    });
+  }
+
+  async validate(payload) {
+    const user = await this.authService.validate(payload.id);
+    if (!user) {
+      throw new UnauthorizedException('Authentication failed');
+    }
+    return user; 
+  }
+}
+export const ExtractJwtFromWsHeader = (req: Socket): string | null => {
+  if (req['handshake']) {
+    return req['handshake'].headers.authorization?.replace('Bearer ', '');
+  }
+  throw new UnauthorizedException('Authentication failed');
+};

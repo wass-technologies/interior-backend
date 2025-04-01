@@ -1,5 +1,5 @@
 import { Admin } from "src/admin/entities/admin.entity";
-import { CommentDetail } from "src/comment-details/entities/comment-detail.entity";
+import { CommentDetail } from "src/comment/entities/comment-detail.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -34,7 +34,9 @@ export class Blog {
     @ManyToOne(() => Admin, (admin) => admin.projects, { onDelete: 'CASCADE' })
     admin: Admin;
 
-    @OneToMany(()=> CommentDetail,(comment)=>comment.blogPost)
-    comments:CommentDetail[];
+    
+
+    @OneToMany(() => CommentDetail, (comments) => comments.blogPost)
+    comments: CommentDetail[];
   
 }
