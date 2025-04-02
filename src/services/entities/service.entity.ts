@@ -1,4 +1,5 @@
 import { Admin } from "src/admin/entities/admin.entity";
+import { ServiceStatus } from "src/enum";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -11,6 +12,9 @@ export class Service {
 
     @Column('text')
     description: string;
+
+    @Column({ type: 'enum', enum: ServiceStatus, default: ServiceStatus.ACTIVE })
+    status: ServiceStatus;
 
     @Column()
     file: string;

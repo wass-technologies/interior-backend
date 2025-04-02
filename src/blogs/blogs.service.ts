@@ -13,16 +13,14 @@ export class BlogsService {
     @InjectRepository(Blog) private readonly blogRepo: Repository<Blog>,
     @InjectRepository(Admin) private readonly adminRepo: Repository<Admin>
   ){}
- async create(createBlogDto: CreateBlogDto) {
-    const admin = await this.adminRepo.findOne({where:{id:createBlogDto.adminId}});
-    if (!admin) {
-      throw new NotFoundException('Admin not found');
-    }
+ async create(createBlogDto: CreateBlogDto, user:Admin) {
+
     const result = await this.blogRepo.findOne({where:{title:createBlogDto.title}});
     if(result){
       throw new ConflictException('Blogs alredy exists');
     }
-    const obj = this.blogRepo.create({...createBlogDto, admin});
+    const obj = this.blogRepo.create(createBlogDto);
+    obj.admin=user;
     return this.blogRepo.save(obj);
   }
 
@@ -71,7 +69,6 @@ export class BlogsService {
     });
     return this.blogRepo.save(obj);
   }
-  
   
 
 

@@ -2,7 +2,7 @@ import { Blog } from "src/blogs/entities/blog.entity";
 import { Category } from "src/category/entities/category.entity";
 import { EventDetail } from "src/events/entities/event-detail.entity";
 import { Feedback } from "src/feedback/entities/feedback.entity";
-import { Member } from "src/member/entities/member-detail.entity";
+import { Member } from "src/member/entities/member.entity";
 import { Project } from "src/projects/entities/project.entity";
 import { Service } from "src/services/entities/service.entity";
 import { Setting } from "src/settings/entities/setting.entity";

@@ -22,7 +22,4 @@ export class CreateBlogDto {
     @IsOptional()
     date: Date;
 
-    adminId:string;
-
-
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, Put, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, Put, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator, UseGuards } from '@nestjs/common';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
@@ -6,15 +6,20 @@ import { CommonPaginationDto } from 'src/common/common-pagination.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { AuthGuard } from '@nestjs/passport';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { Admin } from 'src/admin/entities/admin.entity';
 
 @Controller('blogs')
 export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
 
   @Post()
-  create(@Body() createBlogDto: CreateBlogDto) {
-    return this.blogsService.create(createBlogDto);
+  @UseGuards(AuthGuard('jwt'))
+  create(@Body() createBlogDto: CreateBlogDto,@CurrentUser() user:Admin) {
+    return this.blogsService.create(createBlogDto,user);
   }
+
   @Get()
   findAll(@Query()dto:CommonPaginationDto){
     return this.blogsService.findAll(dto);
@@ -26,11 +31,13 @@ export class BlogsController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(@Param('id') id:string, @Body() dot:UpdateBlogDto){
     return this.blogsService.update(id,dot);
   }
 
   @Put('image/:id')
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({

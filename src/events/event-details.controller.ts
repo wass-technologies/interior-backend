@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Put, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
 import { EventDetailsService } from './event-details.service';
 import { CreateEventDetailDto } from './dto/create-event-detail.dto';
 import { UpdateEventDetailDto } from './dto/update-event-detail.dto';
@@ -6,12 +6,14 @@ import { CommonPaginationDto } from 'src/common/common-pagination.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path/posix';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('event-details')
 export class EventDetailsController {
   constructor(private readonly eventDetailsService: EventDetailsService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   create(@Body() createEventDetailDto: CreateEventDetailDto) {
     return this.eventDetailsService.create(createEventDetailDto);
   }
@@ -31,6 +33,7 @@ export class EventDetailsController {
   }
   
   @Put('image/:id')
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({

@@ -15,6 +15,11 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { AuthModule } from './auth/auth.module';
 import { SettingsModule } from './settings/settings.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { CommentDetailsModule } from './comment/comment-details.module';
+import { ContactusDetail } from './contactus/entities/contactus-detail.entity';
+import { ContactusDetailsModule } from './contactus/contactus-details.module';
+import { MemberModule } from './member/member.module';
+import { EventDetailsModule } from './events/event-details.module';
 
 
 
@@ -37,7 +42,7 @@ import { CacheModule } from '@nestjs/cache-manager';
   CacheModule.register({
     isGlobal: true,
   }),
-    AdminModule, BlogsModule, EmailSubscribersModule, CategoryModule, ProjectsModule, ServicesModule, FeedbackModule, AuthModule, SettingsModule,],
+    AdminModule, BlogsModule, EmailSubscribersModule, CategoryModule, ProjectsModule, ServicesModule, FeedbackModule, AuthModule, SettingsModule,CommentDetailsModule,ContactusDetailsModule,MemberModule,EventDetailsModule],
   controllers: [AppController],
   providers: [AppService],
 })

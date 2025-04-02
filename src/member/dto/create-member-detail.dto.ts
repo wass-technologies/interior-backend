@@ -6,7 +6,4 @@ export class CreateMemberDetailDto {
     
     @IsString()
     designation: string;
-
-    @IsString()
-    adminId: string;
 }

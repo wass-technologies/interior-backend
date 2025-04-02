@@ -13,7 +13,7 @@ export class ContactusDetailsService {
 
   ){}
   async create(dto: CreateContactusDetailDto) {
-    const obj = Object.create(dto);
+    const obj = this.repo.create(dto);
     return this.repo.save(obj);
   }
 
