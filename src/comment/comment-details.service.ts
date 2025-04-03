@@ -24,13 +24,12 @@ export class CommentDetailsService {
 
  async findAll(dto:CommonPaginationDto) {
     const keyword = dto.keyword || '';
-
-    const queryBuilder = this.repo.createQueryBuilder('comment_detail')
-    .leftJoinAndSelect('comment_detail.blogPost', 'blog')
+    const queryBuilder = this.repo.createQueryBuilder('comment')
+    .leftJoinAndSelect('comment.blogPost', 'blog')
     .take(dto.limit)
     .skip(dto.offset);
     if(keyword){
-      queryBuilder.andWhere('(comment_detail.name LIKE :keyword OR comment_detail.content LIKE : keyword)',{keyword:`%${keyword}%`});
+      queryBuilder.andWhere('(comment.name LIKE :keyword OR comment.content LIKE : keyword)',{keyword:`%${keyword}%`});
 
     }
     const [result, count] =await queryBuilder.getManyAndCount();

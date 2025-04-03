@@ -1,7 +1,7 @@
 import { Blog } from "src/blogs/entities/blog.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({ name: "comment" })
 export class CommentDetail {
     @PrimaryGeneratedColumn()
     id: number;

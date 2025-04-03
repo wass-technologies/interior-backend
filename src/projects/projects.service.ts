@@ -77,6 +77,21 @@ return { result, total };
 
  }
 
+ async getProjectImagesForSlider() {
+  const query = this.repo
+    .createQueryBuilder('project')
+    .select([
+      'project.file', 
+      'project.fileName'
+    ])
+    .where('project.status = :status', {
+      status: ProjectStatus.ACTIVE,
+    });
+
+  const [result,total] = await query.getManyAndCount();
+  return {result,total}
+}
+
 
  async findProject(id: String) {
   console.log(id);

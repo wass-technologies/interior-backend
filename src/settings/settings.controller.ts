@@ -58,6 +58,15 @@ export class SettingsController {
     return this.settingsService.findOne(+id);
   }
 
+  @Get('link')
+  async getLinkByName(@Query() paginationDto: CommonPaginationDto) {
+    return this.settingsService.getLinkByName(paginationDto);
+  }
+
+  @Get('logo')
+  async getFileAndFileNameByName(@Query() paginationDto: CommonPaginationDto) {
+    return this.settingsService.getFileAndFileNameByName(paginationDto);
+  }
 
   @Patch(':id')
   @UseGuards(AuthGuard('jwt'))

@@ -34,8 +34,6 @@ export class Blog {
     @ManyToOne(() => Admin, (admin) => admin.projects, { onDelete: 'CASCADE' })
     admin: Admin;
 
-    
-
     @OneToMany(() => CommentDetail, (comments) => comments.blogPost)
     comments: CommentDetail[];
   

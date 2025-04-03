@@ -15,6 +15,7 @@ export class MemberController {
   constructor(private readonly memberDetailService: MemberService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt')) 
   create(@Body() dto: CreateMemberDetailDto,@CurrentUser()user:Admin) {
     return this.memberDetailService.create(dto,user);
   }
@@ -30,6 +31,7 @@ export class MemberController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(@Param('id') id: string, @Body() dto: UpdateMemberDetailDto) {
     return this.memberDetailService.update(id, dto);
   }
@@ -68,6 +70,7 @@ export class MemberController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(@Param('id') id: string) {
     return this.memberDetailService.remove(id);
   }

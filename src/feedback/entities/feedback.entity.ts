@@ -7,10 +7,16 @@ export class Feedback {
     id: string;
 
     @Column()
-    comment: string;
+    name:string;
 
     @Column()
+    comment: string;
+
+    @Column({default: 0 })
     rating: number;
+
+    @Column()
+    profileImage:string
 
     @ManyToOne(() => Admin, (admin) => admin.feedbacks)
     admin: Admin;

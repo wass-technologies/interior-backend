@@ -1,19 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateMemberDto } from './dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto';
 import { Member } from './entities/member.entity';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Admin } from 'src/admin/entities/admin.entity';
 import { CommonPaginationDto } from 'src/common/common-pagination.dto';
 import { UpdateMemberDetailDto } from './dto/update-member-detail.dto';
+import { CreateMemberDetailDto } from './dto/create-member-detail.dto';
 
 @Injectable()
 export class MemberService {
   constructor(
     @InjectRepository(Member) private readonly memberRepo: Repository<Member>,
   ) {}
-  async create(dto: CreateMemberDto,user:Admin) {
+  async create(dto: CreateMemberDetailDto,user:Admin) {
 
     const obj = this.memberRepo.create({...dto,admin:user});
 
@@ -58,13 +57,15 @@ export class MemberService {
     return this.memberRepo.save(obj);
   }
 
-    async image(image:string, result:Member){
-      const obj = Object.assign(result,{
-        file: process.env.BASE_URL + image,
-        fileName: image,
-      });
-      return this.memberRepo.save(obj);
-    }
+
+
+  async image(image:string, result:Member){
+    const obj = Object.assign(result,{
+      file: process.env.BASE_URL + image,
+      fileName: image,
+    });
+    return this.memberRepo.save(obj);
+  }
 
   async remove(id: string) {
     const member = await this.memberRepo.findOne({ where: { id } });

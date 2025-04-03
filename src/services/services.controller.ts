@@ -25,6 +25,7 @@ export class ServicesController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(@Param('id') id: string, @Body() dto:CreateServiceDto) {
     return this.servicesService.update(id, dto);
   }

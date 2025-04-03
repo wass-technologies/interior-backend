@@ -29,10 +29,10 @@ export class EventDetailsService {
   }
   async findAll(dto:CommonPaginationDto){
     const keyword = dto.keyword || '';
-    const queryBuilder = this.eventRepo.createQueryBuilder('event_detail');
+    const queryBuilder = this.eventRepo.createQueryBuilder('event');
     if(keyword){
       queryBuilder.andWhere(
-        '(event_detail.title Like :keyword OR event_detail.month Like :keyword OR event_detail.decription LIKE :keyword)',
+        '(event.title Like :keyword OR event.month Like :keyword OR event.decription LIKE :keyword)',
         {keyword:`%${keyword}%`}
       )
     }

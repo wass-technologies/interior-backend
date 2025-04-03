@@ -58,6 +58,38 @@ export class SettingsService {
     }
     return result;
   }
+
+  async getLinkByName(dto: CommonPaginationDto) {
+    const keyword  = dto.keyword || '';
+    const queryBuilder = this.repo.createQueryBuilder('setting');
+    if (keyword) {
+      queryBuilder.where('setting.name LIKE :keyword', { keyword: `%${keyword}%` });
+    }
+    queryBuilder.select(['setting.name', 'setting.link']);
+
+    queryBuilder.take(dto.limit);
+    queryBuilder.skip(dto.offset);
+
+    const settings = await queryBuilder.getMany();
+    return settings;
+  }
+
+  async getFileAndFileNameByName(dto: CommonPaginationDto) {
+    const keyword  = dto.keyword || '';
+    const queryBuilder = this.repo.createQueryBuilder('setting');
+    if (keyword) {
+      queryBuilder.where('setting.name LIKE :keyword', { keyword: `%${keyword}%` });
+    }
+    queryBuilder.select(['setting.name', 'setting.file', 'setting.fileName']);
+
+    queryBuilder.take(dto.limit);
+    queryBuilder.skip(dto.offset);
+
+    const settings = await queryBuilder.getMany();
+    return settings;
+  }
+
+
   async update(id: number, dto: UpdateSettingDto) {
     const result = await this.getSetting(id);
     this.deleteSetting(id);

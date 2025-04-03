@@ -19,7 +19,12 @@ export class Member {
     fileName: string;
 
     @Column('json', { nullable: true })
-    socialLinks: { [key: string]: string };
+    socialMediaLinks: {
+      facebook?: string;
+      twitter?: string;
+      linkedin?: string;
+      instagram?: string;
+    };
     
     @ManyToOne(()=>Admin, (admin)=>admin.members)
     admin:Admin;

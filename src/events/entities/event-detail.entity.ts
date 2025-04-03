@@ -1,7 +1,7 @@
 import { Admin } from "src/admin/entities/admin.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity()
+@Entity({name:"event"})
 export class EventDetail {
     @PrimaryGeneratedColumn('uuid')
     id: string;

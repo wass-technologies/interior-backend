@@ -24,7 +24,13 @@ export class ProjectsController {
     return this.projectsService.findAll(dto);
   }
 
+  @Get('slider-images')
+  async getProjectImagesForSlider() {
+    return this.projectsService.getProjectImagesForSlider();
+  }
+
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
   update(@Param('id') id: string, @Body() dto:CreateProjectDto) {
     return this.projectsService.update(id, dto);
   }
@@ -68,6 +74,7 @@ export class ProjectsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   remove(@Param('id') id: string) {
     return this.projectsService.remove(+id);
   }
