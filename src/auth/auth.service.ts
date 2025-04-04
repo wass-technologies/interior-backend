@@ -49,7 +49,6 @@ export class AuthService {
       .getOne();
   
     if (!result) {
-      console.log('User not found:', loginId);
       throw new UnauthorizedException('Account not found!');
     }
     return result;
@@ -64,7 +63,6 @@ export class AuthService {
       .getOne();
   
     if (!result) {
-      console.log('User not found:', loginId);
       throw new UnauthorizedException('Account not found!');
     }
     return result;

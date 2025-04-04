@@ -7,7 +7,7 @@ export class Service {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 55, nullable: true })
     name: string;
 
     @Column('text')

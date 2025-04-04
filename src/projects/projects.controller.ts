@@ -25,8 +25,8 @@ export class ProjectsController {
   }
 
   @Get('slider-images')
-  async getProjectImagesForSlider() {
-    return this.projectsService.getProjectImagesForSlider();
+  async getProjectImagesForSlider(@Query()dto:PaginationDto) {
+    return this.projectsService.findProjectImages(dto);
   }
 
   @Patch(':id')

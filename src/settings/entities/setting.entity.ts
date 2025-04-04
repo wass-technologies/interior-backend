@@ -6,11 +6,23 @@ export class Setting {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    name: string; 
+    @Column({ type: 'varchar', length: 55, nullable: true })
+    name: string;
 
-    @Column()
-    link: string;
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    whatsApp: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    linkDin: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    twiter: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    facebook: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    instagram: string;
     
     @Column({ type: 'text', nullable: true })
     file: string;

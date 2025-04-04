@@ -29,7 +29,7 @@ export class ProjectsService {
     throw new NotFoundException('Category Not Found..!')
    }
    const obj= await this.repo.create({...dto,category,admin:user})
-   
+  
    return this.repo.save(obj);
   }
 
@@ -46,8 +46,7 @@ export class ProjectsService {
     'project.file',
     'project.fileName',
 
-    'category.id',
-    'category.name'
+    'category.id AS categoryId',
   ])
   .where('project.status = :status', {
     status: ProjectStatus.ACTIVE,
@@ -59,14 +58,8 @@ export class ProjectsService {
       });
     }),
   );
-  if(category !== null){
-  query.andWhere(
-    new Brackets((qb) => {
-      qb.where('category.name LIKE :name', {
-      name: '%' + category + '%',
-      });
-    }),
-  );
+  if (dto.category) {
+    query.andWhere('category.id = :category', { category: dto.category });
 }
   const [result, total] = await query
   .skip(dto.offset)
@@ -77,29 +70,37 @@ return { result, total };
 
  }
 
- async getProjectImagesForSlider() {
+ async findProjectImages(dto: PaginationDto) {
+  const keyword = dto.keyword || '';
   const query = this.repo
-    .createQueryBuilder('project')
-    .select([
-      'project.file', 
-      'project.fileName'
-    ])
-    .where('project.status = :status', {
-      status: ProjectStatus.ACTIVE,
-    });
+      .createQueryBuilder('project')
+      .leftJoin('project.category', 'category')
+      .select([
+          'project.id',
+          'project.fileName',
+          'category.id AS categoryId',
+      ])
+      .where('project.fileName IS NOT NULL')
+      .take(dto.limit)
+      .skip(dto.offset);
+  if (dto.category) {
+      query.andWhere('category.id = :category', { category: dto.category });
+  }
+  if (dto.keyword) {
+      query.andWhere('project.name LIKE :keyword', { keyword: `%${dto.keyword}%` });
+  }
 
-  const [result,total] = await query.getManyAndCount();
-  return {result,total}
+  const [result, total] = await query.getManyAndCount();
+
+  return {result,total};
 }
 
 
  async findProject(id: String) {
-  console.log(id);
     const result = await this.repo
       .createQueryBuilder('project')
       .where('project.id = :id', { id: id })
       .getOne();
-      console.log(result);
     if (!result) {
       throw new NotFoundException('Project not found!');
     }

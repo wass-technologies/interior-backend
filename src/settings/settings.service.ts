@@ -15,21 +15,9 @@ export class SettingsService {
     @InjectRepository(Admin) private readonly admin : Repository<Admin>,
 
   ) {}
-  async create(dto: CreateSettingDto,user:Admin,image:string) {
-    const result = await this.repo.findOne({
-      where:[
-        {name:dto.name},
-        {link:dto.link}
-      ],
-    });
-    if(result){
-      throw new ConflictException('Alredy exists!')
-    }
+  async create(dto: CreateSettingDto,user:Admin) {
     const obj = this.repo.create(dto);
-    obj.file=process.env.BASE_URL+image;
-    obj.fileName=image;
-    obj.admin=user;
-
+    obj.admin=user
     return this.repo.save(obj);
 
   }
@@ -101,7 +89,7 @@ export class SettingsService {
     const setting = await this.getSetting(id);
 
     const obj = Object.assign(setting, {
-      file: process.env.BL_CDN_LINK + image,
+      file: process.env.BASE_URL + image,
       fileName: image,
     });
     return this.repo.save(obj);

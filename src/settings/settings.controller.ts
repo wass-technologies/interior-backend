@@ -18,34 +18,11 @@ export class SettingsController {
 
   @Post()
   @UseGuards(AuthGuard('jwt'))
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/Settings', 
-        filename: (req, file, callback) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return callback(null, `${randomName}${extname(file.originalname)}`);  
-        },
-      }),
-    }),
-  )
   async create(
     @Body() dto: CreateSettingDto, 
-    @CurrentUser() user: Admin, 
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new FileTypeValidator({ fileType: '.(png|jpeg|jpg|mp4)' }),
-          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 1 }), 
-        ],
-      }),
-    ) file: Express.Multer.File, 
-  ) {
-
-    return this.settingsService.create(dto, user, file.path);
+    @CurrentUser() user: Admin,) 
+  {
+    return this.settingsService.create(dto, user);
   }
 
   @Get()

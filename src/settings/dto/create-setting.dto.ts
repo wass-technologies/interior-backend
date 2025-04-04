@@ -1,12 +1,28 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from "class-validator";
 
 export class CreateSettingDto {
     @IsNotEmpty()
     @IsString()
-    name: string; 
+    name: string;
 
     @IsNotEmpty()
     @IsString()
+    whatsApp: string;
+
     @IsOptional()
-    link: string; 
+    @IsUrl()
+    linkDin?: string;
+
+    @IsOptional()
+    @IsUrl()
+    twiter?: string;
+    
+    @IsOptional()
+    @IsUrl()
+    facebook?: string;
+
+    @IsOptional()
+    @IsUrl()
+    instagram?: string;
+
 }

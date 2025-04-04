@@ -37,7 +37,7 @@ import { EventDetailsModule } from './events/event-details.module';
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    synchronize: false,
+    synchronize:false,
   }),
   CacheModule.register({
     isGlobal: true,

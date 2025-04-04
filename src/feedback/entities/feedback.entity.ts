@@ -6,10 +6,10 @@ export class Feedback {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 55, nullable: true })
     name:string;
 
-    @Column()
+    @Column({ type: 'text', nullable: true })
     comment: string;
 
     @Column({default: 0 })

@@ -31,7 +31,7 @@ export class Blog {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @ManyToOne(() => Admin, (admin) => admin.projects, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Admin, (admin) => admin.blogs, { onDelete: 'CASCADE' })
     admin: Admin;
 
     @OneToMany(() => CommentDetail, (comments) => comments.blogPost)
